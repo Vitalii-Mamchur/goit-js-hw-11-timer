@@ -1,5 +1,3 @@
-import css from './styles.css';
-
 const refs = {
   selectorTimer: document.querySelector('#timer-1'),
   daysTimer: document.querySelector('[data-value="days"]'),
