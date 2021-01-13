@@ -5,35 +5,51 @@ const refs = {
   minsTimer: document.querySelector('[data-value="mins"]'),
   secsTimer: document.querySelector('[data-value="secs"]'),
 };
-console.log(refs.selectorTimer);
 
-const targetDate = new Date('2021-01-01').getTime();
-//console.log(targetDate);
+class CountdownTimer {
+  constructor({ selector, targetDate, resetTimer }) {
+    this.selector = selector;
+    this.targetDate = targetDate;
+    this.resetTimer = resetTimer;
+  }
 
-function CountdownTimer() { 
-  const currentTime = Date.now();
-  const time = targetDate - currentTime;
-  //console.log(time);
-  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-  const hours = pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-  const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-  const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-  //console.log('secs: ' + secs);
-  refs.daysTimer.textContent = `${days}` + ":";
-  refs.hoursTimer.textContent = `${hours}` + ":";
-  refs.minsTimer.textContent = `${mins}` + ":";
-  refs.secsTimer.textContent = `${secs}`;
+  start() {
+    const timerId = setInterval(() => {
+      const curentTime = Date.now();
+      const delta = this.targetDate - curentTime;
+      if (delta < 0) {
+        clearInterval(timerId);
+        return console.log("Your date is wrong!");
+      }
+      const time = this.getTimerComponents(delta);
+      this.resetTimer(time);
+    }, 1000);
+  }
+
+  getTimerComponents(time) {
+    const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = this.pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+    const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+    return ({ days, hours, mins, secs });
+  }
+
+  pad(value) {
+    return String(value).padStart(2, 0);
+  }
 }
 
-function initializeTimer() { 
-  CountdownTimer();
-  const intervalId = setInterval(() => {
-    CountdownTimer();
-  }, 1000);
+function markupTimer({ days, hours, mins, secs }) {
+  refs.daysTimer.textContent = `${days}`;
+  refs.hoursTimer.textContent = `${hours}`;
+  refs.minsTimer.textContent = `${mins}`;
+  refs.secsTimer.textContent = `${secs}`;
 };
 
-initializeTimer();
+const timer = new CountdownTimer({
+  selector: '#timer-1',
+  targetDate: new Date('Jul 17, 2021'),
+  resetTimer: markupTimer,
+});
 
-function pad(value) { 
-  return String(value).padStart(2, 0);
-}
+timer.start();

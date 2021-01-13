@@ -1,19 +1,32 @@
 body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #000;
   color: wheat;
-  padding-top: 30px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.timer{
+  display: flex;
   justify-content: center;
-  text-align: center;
-  cursor: pointer;
+  border: 2px solid white;
+  border-radius: 15px;
 }
 
 .field {
-  display: inline-block;
-  /* border: 2px solid white; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
 }
 
 .value {
-  display: block;
   font-size: 55px;
+}
+
+.label{
+  font-size: 35px;
+  padding-left: 10px;
 }
